@@ -1,0 +1,118 @@
+# =================================================================
+# InfraPulse VM Production Docker Compose Setup
+# Services: PostgreSQL, Redis, FastAPI Backend, Celery AI Worker, Nginx
+# =================================================================
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: infrapulse-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres_secure_2026}
+      POSTGRES_DB: ${POSTGRES_DB:-infrapulse}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-infrapulse}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - infrapulse-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: infrapulse-redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    networks:
+      - infrapulse-net
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: infrapulse-backend
+    restart: unless-stopped
+    environment:
+      PROJECT_NAME: "InfraPulse Backend"
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres_secure_2026}@postgres:5432/${POSTGRES_DB:-infrapulse}
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      REDIS_AI_EVENT_CHANNEL: infrapulse.ai.events.v1
+      REDIS_WS_CHANNEL: infrapulse.ws.events.v1
+      CELERY_AI_QUEUE: inference
+      CELERY_TASK_NAME: app.tasks.process_complaint
+      AI_PIPELINE_VERSION: v1
+      JWT_SECRET: ${JWT_SECRET:-infrapulse-super-secret-production-key-change-in-env-2026}
+      STORAGE_BACKEND: local
+      STORAGE_ROOT: /app/uploads
+      FRONTEND_ORIGINS: '["${FRONTEND_ORIGIN:-https://localhost}","http://localhost:5173","*"]'
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: >
+      sh -c "alembic upgrade head &&
+             python scripts/seed_staff.py &&
+             exec uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    networks:
+      - infrapulse-net
+
+  ai-service:
+    build:
+      context: ./ai-service
+      dockerfile: Dockerfile
+    container_name: infrapulse-ai-service
+    restart: unless-stopped
+    environment:
+      MODEL_WEIGHTS_PATH: /app/model_weights/mobilenet_v3_small_best.pth
+      REDIS_BROKER_URL: redis://redis:6379/0
+      REDIS_EVENT_URL: redis://redis:6379/0
+    volumes:
+      # Mount the same shared upload volume so the worker can read complaint photos
+      - uploads_data:/app/uploads:ro
+      # Mount model checkpoint
+      - ./ai-service/model_weights:/app/model_weights:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    networks:
+      - infrapulse-net
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: infrapulse-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - infrapulse-net
+
+
+volumes:
+  postgres_data:
+  redis_data:
+  uploads_data:
+
+networks:
+  infrapulse-net:
+    driver: bridge

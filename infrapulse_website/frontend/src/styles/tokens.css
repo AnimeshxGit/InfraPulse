@@ -1,0 +1,181 @@
+/* InfraPulse Paper Design Tokens */
+:root {
+  /* Surface & Canvas (Light Theme) */
+  --bg-app: #F9F8F5;
+  --bg-app-subtle: #F4F0E8;
+  --surface-paper: #FFFFFF;
+  --surface-paper-muted: #F8F6F1;
+  --surface-paper-hover: #FAF9F6;
+  --surface-paper-inset: #F2EFE9;
+
+  /* Borders & Rules */
+  --border-neutral: #E5E0D8;
+  --border-subtle: #EFECE6;
+  --border-strong: #CFC7BA;
+  --border-focus: #B85D19;
+
+  /* Typography Colors */
+  --text-primary: #1C1E21;
+  --text-secondary: #565C65;
+  --text-muted: #858D98;
+  --text-on-accent: #FFFFFF;
+
+  /* Restrained Operational Accent (Burnt Bronze / Terracotta) */
+  --accent-primary: #B85D19;
+  --accent-hover: #9F4D10;
+  --accent-active: #8A400B;
+  --accent-subtle: #FDF5ED;
+  --accent-border: #E8CEBA;
+  --accent-focus-ring: rgba(184, 93, 25, 0.25);
+
+  /* Status Colors */
+  --status-submitted-text: #3D4450;
+  --status-submitted-bg: #F0F2F5;
+  --status-submitted-border: #D8DCE2;
+
+  --status-assigned-text: #1E40AF;
+  --status-assigned-bg: #EFF6FF;
+  --status-assigned-border: #BFDBFE;
+
+  --status-progress-text: #92400E;
+  --status-progress-bg: #FEF3C7;
+  --status-progress-border: #FDE68A;
+
+  --status-resolved-text: #166534;
+  --status-resolved-bg: #F0FDF4;
+  --status-resolved-border: #BBF7D0;
+
+  /* Priority Levels */
+  --priority-low-text: #475569;
+  --priority-low-bg: #F1F5F9;
+  --priority-low-border: #CBD5E1;
+
+  --priority-medium-text: #B45309;
+  --priority-medium-bg: #FFFBEB;
+  --priority-medium-border: #FDE68A;
+
+  --priority-high-text: #C2410C;
+  --priority-high-bg: #FFF7ED;
+  --priority-high-border: #FED7AA;
+
+  --priority-critical-text: #991B1B;
+  --priority-critical-bg: #FEF2F2;
+  --priority-critical-border: #FECACA;
+
+  /* Department Categories */
+  --cat-structural-text: #1E293B;
+  --cat-structural-bg: #F1F5F9;
+  --cat-structural-border: #CBD5E1;
+
+  --cat-functional-text: #134E4A;
+  --cat-functional-bg: #F0FDFA;
+  --cat-functional-border: #99F6E4;
+
+  --cat-performance-text: #78350F;
+  --cat-performance-bg: #FEF3C7;
+  --cat-performance-border: #FDE68A;
+
+  /* Shadows (Minimal paper elevation) */
+  --shadow-xs: 0 1px 2px rgba(28, 30, 33, 0.03);
+  --shadow-sm: 0 1px 3px rgba(28, 30, 33, 0.05), 0 1px 2px rgba(28, 30, 33, 0.02);
+  --shadow-md: 0 4px 6px -1px rgba(28, 30, 33, 0.04), 0 2px 4px -1px rgba(28, 30, 33, 0.02);
+  --shadow-lg: 0 10px 15px -3px rgba(28, 30, 33, 0.05), 0 4px 6px -2px rgba(28, 30, 33, 0.02);
+
+  /* Radii */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 9999px;
+
+  /* Layout */
+  --header-height: 64px;
+  --max-content-width: 1200px;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+}
+
+/* Dark Mode Tokens — The Dark Paper Aesthetic */
+[data-theme='dark'],
+.dark {
+  /* Surface & Canvas (Dark Paper Theme) */
+  --bg-app: #131416;
+  --bg-app-subtle: #181A1D;
+  --surface-paper: #1B1E22;
+  --surface-paper-muted: #21252B;
+  --surface-paper-hover: #262B32;
+  --surface-paper-inset: #16181B;
+
+  /* Borders & Rules */
+  --border-neutral: #2E333B;
+  --border-subtle: #262A31;
+  --border-strong: #3D4450;
+  --border-focus: #D47732;
+
+  /* Typography Colors */
+  --text-primary: #ECEEF0;
+  --text-secondary: #9EA5B0;
+  --text-muted: #6F7682;
+  --text-on-accent: #FFFFFF;
+
+  /* Restrained Operational Accent (Dark mode calibrated) */
+  --accent-primary: #D47732;
+  --accent-hover: #E28742;
+  --accent-active: #C16928;
+  --accent-subtle: rgba(212, 119, 50, 0.14);
+  --accent-border: rgba(212, 119, 50, 0.35);
+  --accent-focus-ring: rgba(212, 119, 50, 0.3);
+
+  /* Status Colors (High Contrast in Dark Mode) */
+  --status-submitted-text: #A6ACB8;
+  --status-submitted-bg: #21252C;
+  --status-submitted-border: #363C48;
+
+  --status-assigned-text: #93C5FD;
+  --status-assigned-bg: #17253D;
+  --status-assigned-border: rgba(37, 99, 235, 0.35);
+
+  --status-progress-text: #FCD34D;
+  --status-progress-bg: #332612;
+  --status-progress-border: rgba(202, 138, 4, 0.35);
+
+  --status-resolved-text: #86EFAC;
+  --status-resolved-bg: #132B1C;
+  --status-resolved-border: rgba(22, 163, 74, 0.35);
+
+  /* Priority Levels (Dark Mode) */
+  --priority-low-text: #94A3B8;
+  --priority-low-bg: #1E252E;
+  --priority-low-border: #334155;
+
+  --priority-medium-text: #FBBF24;
+  --priority-medium-bg: #33250E;
+  --priority-medium-border: rgba(217, 119, 6, 0.4);
+
+  --priority-high-text: #FB923C;
+  --priority-high-bg: #361D10;
+  --priority-high-border: rgba(234, 88, 12, 0.4);
+
+  --priority-critical-text: #FCA5A5;
+  --priority-critical-bg: #381414;
+  --priority-critical-border: rgba(220, 38, 38, 0.45);
+
+  /* Department Categories (Dark Mode) */
+  --cat-structural-text: #93C5FD;
+  --cat-structural-bg: #18253A;
+  --cat-structural-border: #273C5E;
+
+  --cat-functional-text: #5EEAD4;
+  --cat-functional-bg: #122E2B;
+  --cat-functional-border: #1E4D48;
+
+  --cat-performance-text: #FCD34D;
+  --cat-performance-bg: #34260F;
+  --cat-performance-border: #573F17;
+
+  /* Shadows (Dark Mode) */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.45), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.35);
+}
